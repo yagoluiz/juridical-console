@@ -2,12 +2,11 @@
   (:require [etaoin.api :as e]))
 
 (defn start-driver [url]
-  (e/chrome-headless {:web-driver-url (:web-driver-url url)
+  (e/chrome-headless {:web-driver-url url
                       :args           ["--disable-dev-shm-usage"
                                        "--disable-gpu"]}))
 
-(defn login-page
-  [driver url user password]
+(defn login-page [driver url user password]
   (e/go driver url)
   (e/fill driver {:id "login"} user)
   (e/fill driver {:id "senha"} password)
@@ -15,16 +14,14 @@
   (Thread/sleep 2000)
   driver)
 
-(defn process-page
-  [driver service-key]
+(defn process-page [driver service-key]
   (let [elements (e/query-all driver {:xpath (str "//*[contains(text(),'" service-key "')]")})
         last-el  (last elements)]
     (when last-el (e/click-el driver last-el)))
   (e/switch-frame driver {:name "userMainFrame"})
   driver)
 
-(defn extract-process-count
-  [driver]
+(defn extract-process-count [driver]
   (let [rows (e/query-all driver {:css "table tbody tr"})]
     (loop [rs rows]
       (if (empty? rs)
@@ -38,12 +35,10 @@
               (catch Exception _ 0))
             (recur (rest rs))))))))
 
-(defn logoff-page
-  [driver url]
+(defn logoff-page [driver url]
   (e/go driver (str url "/LogOn?PaginaAtual=-200"))
   driver)
 
-(defn quit-driver
-  [driver]
+(defn quit-driver [driver]
   (e/quit driver)
   nil)
