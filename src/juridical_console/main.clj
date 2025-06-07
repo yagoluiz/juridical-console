@@ -5,7 +5,8 @@
 
 (defn -main [& _]
   (println "##### Juridical Console #####")
-  (let [driver (core/start-driver (config/web-driver-url))]
+  (let [driver (core/start-driver (config/selenium-host)
+                                  (config/selenium-port))]
     (try
       (-> driver
           (core/login-page (config/legal-process-url)

@@ -1,10 +1,12 @@
 (ns juridical-console.core
   (:require [etaoin.api :as e]))
 
-(defn start-driver [url]
-  (e/chrome-headless {:web-driver-url url
-                      :args           ["--disable-dev-shm-usage"
-                                       "--disable-gpu"]}))
+(defn start-driver [url port]
+  (e/chrome {:host url
+             :port port
+             :args ["--disable-dev-shm-usage"
+                    "--disable-gpu"
+                    "--no-sandbox"]}))
 
 (defn login-page [driver url user password]
   (e/go driver url)

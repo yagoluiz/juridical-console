@@ -11,8 +11,12 @@
   (or (System/getenv env-key)
       (get config-edn edn-key)))
 
-(defn web-driver-url []
-  (env-or-edn "WEB_DRIVER_URL" :web-driver-url))
+(defn selenium-host []
+  (env-or-edn "SELENIUM_HOST" :selenium-host))
+
+(defn selenium-port []
+  (Integer/parseInt
+    (env-or-edn "SELENIUM_PORT" :selenium-port)))
 
 (defn legal-process-url []
   (env-or-edn "LEGAL_PROCESS_URL" :legal-process-url))

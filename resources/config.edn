@@ -1,5 +1,6 @@
-{:web-driver-url            "http://localhost:4444/wd/hub"
- :legal-process-url         ""
- :legal-process-user        ""
- :legal-process-password    ""
- :legal-process-service-key ""}
+{:selenium-host             "localhost"
+ :selenium-port             "4444"
+ :legal-process-url         "https://projudi.tjgo.jus.br"
+ :legal-process-user        "user"
+ :legal-process-password    "password"
+ :legal-process-service-key "Magistrado UPJ"}
