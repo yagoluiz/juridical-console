@@ -1,0 +1,33 @@
+services:
+  selenium:
+    image: selenium/standalone-chrome:123.0
+    container_name: selenium
+    hostname: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2gb"
+    environment:
+      - SE_NODE_SESSION_TIMEOUT=300
+    networks:
+      - console-network
+
+  juridical-console:
+    build: .
+    container_name: juridical-console
+    depends_on:
+      - selenium
+    environment:
+      SELENIUM_HOST: "selenium"
+      SELENIUM_PORT: "4444"
+      LEGAL_PROCESS_USER: "${LEGAL_PROCESS_USER}"
+      LEGAL_PROCESS_PASSWORD: "${LEGAL_PROCESS_PASSWORD}"
+    volumes:
+      - .:/app
+    networks:
+      - console-network
+
+networks:
+  console-network:
+    name: console-network
+    driver: bridge
