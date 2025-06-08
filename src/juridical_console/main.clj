@@ -3,8 +3,8 @@
             [juridical-console.config :as config])
   (:gen-class))
 
-(defn -main [& _]
-  (println "##### Juridical Console #####")
+(defn execute-process []
+  (println "##### Starting process run #####")
   (let [driver (core/start-driver (config/selenium-host)
                                   (config/selenium-port))]
     (try
@@ -20,3 +20,11 @@
       (finally
         (core/logoff-page driver (config/legal-process-url))
         (core/quit-driver driver)))))
+
+(defn -main [& _]
+  (println "##### Juridical Console #####")
+  (loop []
+    (execute-process)
+    (println "##### Waiting for next run... #####")
+    (Thread/sleep (long (config/legal-process-execute-in-milliseconds)))
+    (recur)))

@@ -1,6 +1,7 @@
-{:selenium-host             "localhost"
- :selenium-port             "4444"
- :legal-process-url         "https://projudi.tjgo.jus.br/LogOn?PaginaAtual=-200"
- :legal-process-user        "user"
- :legal-process-password    "password"
- :legal-process-service-key "Magistrado UPJ"}
+{:selenium-host                         "localhost"
+ :selenium-port                         "4444"
+ :legal-process-url                     "https://projudi.tjgo.jus.br/LogOn?PaginaAtual=-200"
+ :legal-process-user                    "user"
+ :legal-process-password                "password"
+ :legal-process-service-key             "Magistrado UPJ"
+ :legal-process-execute-in-milliseconds "2000"}

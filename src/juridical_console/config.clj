@@ -15,8 +15,8 @@
   (env-or-edn "SELENIUM_HOST" :selenium-host))
 
 (defn selenium-port []
-  (Integer/parseInt
-    (env-or-edn "SELENIUM_PORT" :selenium-port)))
+  (-> (env-or-edn "SELENIUM_PORT" :selenium-port)
+      (Integer/parseInt)))
 
 (defn legal-process-url []
   (env-or-edn "LEGAL_PROCESS_URL" :legal-process-url))
@@ -29,3 +29,7 @@
 
 (defn legal-process-service-key []
   (env-or-edn "LEGAL_PROCESS_SERVICE_KEY" :legal-process-service-key))
+
+(defn legal-process-execute-in-milliseconds []
+  (-> (env-or-edn "LEGAL_PROCESS_EXECUTE_IN_MILLISECONDS" :legal-process-execute-in-milliseconds)
+      (Integer/parseInt)))
