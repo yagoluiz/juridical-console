@@ -1,6 +1,6 @@
 services:
   selenium:
-    image: selenium/standalone-chrome:123.0
+    image: selenium/standalone-chromium:125.0
     container_name: selenium
     hostname: selenium
     ports:
