@@ -10,35 +10,47 @@
 
 (defn login-page [driver url user password]
   (e/go driver url)
+  (Thread/sleep 1000)
   (e/fill driver {:id "login"} user)
   (e/fill driver {:id "senha"} password)
-  (e/click driver {:name "entrar"})
   (Thread/sleep 2000)
+  (e/click driver {:name "entrar"})
   driver)
 
 (defn process-page [driver service-key]
-  (let [elements (e/query-all driver {:xpath (str "//*[contains(text(),'" service-key "')]")})
-        last-el  (last elements)]
-    (when last-el (e/click-el driver last-el)))
+  (some->> (e/query-all driver {:xpath (str "//*[contains(text(),'" service-key "')]")})
+           last
+           (e/click-el driver))
   (e/switch-frame driver {:name "userMainFrame"})
   driver)
 
 (defn extract-process-count [driver]
-  (let [rows (e/query-all driver {:css "table tbody tr"})]
-    (loop [rs rows]
-      (if (empty? rs)
-        0
-        (let [tds      (e/query-all driver rs {:tag :td})
-              valid-td (some #(when (= (e/get-element-attr driver % "class") "colunaMinima") %) tds)]
-          (if valid-td
-            (try
-              (Integer/parseInt
-                (e/get-element-text driver (e/query driver rs {:tag :a})))
-              (catch Exception _ 0))
-            (recur (rest rs))))))))
+  (try
+    (let [table      (e/query driver {:tag :table})
+          tbody      (e/query driver table {:tag :tbody})
+          table-rows (e/query-all driver tbody {:tag :tr})]
+      (or
+        (some
+          (fn [tr]
+            (let [tds       (e/query-all driver tr {:tag :td})
+                  valid-td? (some #(= (e/get-element-attr driver % "class") "colunaMinima") tds)]
+              (when valid-td?
+                (try
+                  (let [tag     (e/query driver tr {:tag :a})
+                        content (e/get-element-text driver tag)]
+                    (when-not (clojure.string/blank? content)
+                      (Integer/parseInt content)))
+                  (catch Exception e
+                    (println "Process count extraction failed: " (.getMessage e))
+                    0)))))
+          table-rows)
+        0))
+    (catch Exception e
+      (println "Process not enabled: " (.getMessage e))
+      0)))
 
 (defn logoff-page [driver url]
-  (e/go driver (str url "/LogOn?PaginaAtual=-200"))
+  (e/go driver url)
   driver)
 
 (defn quit-driver [driver]

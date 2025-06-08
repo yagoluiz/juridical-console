@@ -8,13 +8,13 @@
   (let [driver (core/start-driver (config/selenium-host)
                                   (config/selenium-port))]
     (try
-      (-> driver
-          (core/login-page (config/legal-process-url)
-                           (config/legal-process-user)
-                           (config/legal-process-password))
-          (core/process-page (config/legal-process-service-key))
-          (core/extract-process-count)
-          (println "##### Process count #####"))
+      (let [process-count (-> driver
+                              (core/login-page (config/legal-process-url)
+                                               (config/legal-process-user)
+                                               (config/legal-process-password))
+                              (core/process-page (config/legal-process-service-key))
+                              (core/extract-process-count))]
+        (println "##### Process count: " process-count " #####"))
       (catch Exception e
         (println "##### Error #####" (.getMessage e)))
       (finally
