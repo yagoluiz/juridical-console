@@ -3,14 +3,14 @@
             [juridical-console.config :as config])
   (:gen-class))
 
-(defn shutdown-driver [driver]
+(defn ^:private shutdown-driver [driver]
   (try
     (scraper/logoff-page driver (config/legal-process-url))
     (scraper/quit-driver driver)
     (catch Exception e
       (println "##### Error during driver shutdown #####" (.getMessage e)))))
 
-(defn register-shutdown-hook [driver]
+(defn ^:private register-shutdown-hook [driver]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread.
                       #(do
