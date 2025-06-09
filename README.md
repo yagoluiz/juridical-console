@@ -1,4 +1,4 @@
-# Juridical Console (WIP)
+# Juridical Console
 
 Worker console responsible for web scraping and identifying legal processes from the Projudi system for the Justice
 Tribunal of Brazil.
