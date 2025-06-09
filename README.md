@@ -5,7 +5,7 @@ Tribunal of Brazil.
 
 ## Project Overview
 
-This project is based on [juridical-worker](https://github.com/yagoluiz/juridical-worker), but implemented in Clojure.
+This project is based on [juridical-worker](https://github.com/yagoluiz/juridical-worker) implemented in Clojure.
 
 ## Running the Project
 
@@ -13,7 +13,7 @@ This project is based on [juridical-worker](https://github.com/yagoluiz/juridica
 
 #### Configuration
 
-When running the project with Leiningen (`lein run` or `lein repl`), update your credentials directly in the
+When running the project with Leiningen (`lein run` or `lein repl`) update your credentials directly in the
 `resources/config.edn` file:
 
 ```clojure
@@ -24,19 +24,19 @@ When running the project with Leiningen (`lein run` or `lein repl`), update your
 #### Run the selenium image
 
 ```sh
-  make run-selenium
+make run-selenium
 ```
 
 #### Run the application
 
 ```sh
-  make lein-run
+make lein-run
 ```
 
 Or using the REPL
 
 ```sh
-  make lein-repl
+make lein-repl
 ```
 
 ### Using Docker
@@ -46,28 +46,28 @@ Or using the REPL
 When running the project with Docker, create a new `.env` file and update your credentials:
 
 ```sh
-  LEGAL_PROCESS_USER=your-username
-  LEGAL_PROCESS_PASSWORD=your-password
+LEGAL_PROCESS_USER=your-username
+LEGAL_PROCESS_PASSWORD=your-password
 ```
 
 #### Run docker-compose
 
 ```sh
-  make run-compose
+make run-compose
 ```
 
 #### Down docker-compose
 
 ```sh
-  make down-compose
+make down-compose
 ```
 
 #### Logs docker-compose
 
 ```sh
-  make logs-selenium
+make logs-selenium
 ```
 
 ```sh
-  make logs-juridical-console
+make logs-juridical-console
 ```
