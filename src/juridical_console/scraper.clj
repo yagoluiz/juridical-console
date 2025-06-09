@@ -1,4 +1,4 @@
-(ns juridical-console.core
+(ns juridical-console.scraper
   (:require [etaoin.api :as e]))
 
 (defn start-driver [url port]

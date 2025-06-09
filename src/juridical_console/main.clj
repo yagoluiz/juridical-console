@@ -1,12 +1,12 @@
 (ns juridical-console.main
-  (:require [juridical-console.core :as core]
+  (:require [juridical-console.scraper :as scraper]
             [juridical-console.config :as config])
   (:gen-class))
 
 (defn shutdown-driver [driver]
   (try
-    (core/logoff-page driver (config/legal-process-url))
-    (core/quit-driver driver)
+    (scraper/logoff-page driver (config/legal-process-url))
+    (scraper/quit-driver driver)
     (catch Exception e
       (println "##### Error during driver shutdown #####" (.getMessage e)))))
 
@@ -21,11 +21,11 @@
   (println "##### Starting process run #####")
   (try
     (let [process-count (-> driver
-                            (core/login-page (config/legal-process-url)
-                                             (config/legal-process-user)
-                                             (config/legal-process-password))
-                            (core/process-page (config/legal-process-service-key))
-                            (core/extract-process-count))]
+                            (scraper/login-page (config/legal-process-url)
+                                                (config/legal-process-user)
+                                                (config/legal-process-password))
+                            (scraper/process-page (config/legal-process-service-key))
+                            (scraper/extract-process-count))]
       (println "##### Process count: " process-count " #####"))
     (catch Exception e
       (println "##### Error #####" (.getMessage e)))
@@ -35,8 +35,8 @@
 (defn -main [& _]
   (println "##### Juridical Console #####")
   (loop [hook-registered? false]
-    (let [driver (core/start-driver (config/selenium-host)
-                                    (config/selenium-port))]
+    (let [driver (scraper/start-driver (config/selenium-host)
+                                       (config/selenium-port))]
       (when (not hook-registered?)
         (register-shutdown-hook driver))
       (execute-process driver)
