@@ -13,7 +13,7 @@ This project is based on [juridical-worker](https://github.com/yagoluiz/juridica
 
 #### Configuration
 
-When running the project with Leiningen (`lein run` or `lein repl`) update your credentials directly in the
+When running the project with Leiningen update your credentials directly in the
 `resources/config.edn` file:
 
 ```clojure
