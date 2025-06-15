@@ -11,14 +11,15 @@
                    :contents [{:type "text" :text message}]}
           response (http/request {:url     (config/senvia-send-sms-url)
                                   :method  :post
-                                  :headers {"x-api-token" (config/senvia-api-token)}
+                                  :headers {"x-api-token" (config/senvia-api-token)
+                                            "Content-Type" "application/json"}
                                   :body    (json/generate-string payload)})]
-      (println (str "##### Zenvia response #####" \n
-                    "Status: " (:status @response) \n
+      (println (str "##### Zenvia response ##### \n"
+                    "Status: " (:status @response) "\n"
                     "Body: " (json/parse-string (:body @response) true)))
       (if (= 200 (:status @response))
         {:sent? true}
         {:sent? false}))
     (catch Exception e
-      (println (str "##### Zenvia error #####\n" (.getMessage e)))
+      (println (str "##### Zenvia error ##### \n" (.getMessage e)))
       {:sent? false})))

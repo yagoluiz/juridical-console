@@ -5,7 +5,8 @@
                  [org.clojure/tools.logging "1.3.0"]
                  [etaoin "1.1.43"]
                  [http-kit "2.8.0"]
-                 [cheshire "6.0.0"]]
+                 [cheshire "6.0.0"]
+                 [nubank/matcher-combinators "3.9.1"]]
   :source-paths ["src"]
   :main ^:skip-aot juridical-console.main
   :target-path "target/%s"
