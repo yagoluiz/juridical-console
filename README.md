@@ -19,6 +19,9 @@ When running the project with Leiningen update your credentials directly in the
 ```clojure
 :legal-process-user     "your-username"
 :legal-process-password "your-password"
+:senvia-api-token       "your-api-token"
+:senvia-sms-from        "your-zenvia-id"
+:senvia-sms-to          "your-to-phone-number"
 ```
 
 #### Run the selenium image
@@ -48,6 +51,9 @@ When running the project with Docker, create a new `.env` file and update your c
 ```sh
 LEGAL_PROCESS_USER=your-username
 LEGAL_PROCESS_PASSWORD=your-password
+SENVIA_API_TOKEN=your-api-token
+SENVIA_SMS_FROM=your-zenvia-id
+SENVIA_SMS_TO=your-to-phone-number
 ```
 
 #### Run docker-compose
