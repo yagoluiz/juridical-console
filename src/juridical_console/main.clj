@@ -1,6 +1,7 @@
 (ns juridical-console.main
   (:require [juridical-console.scraper :as scraper]
-            [juridical-console.config :as config])
+            [juridical-console.config :as config]
+            [juridical-console.zenvia :as zenvia])
   (:gen-class))
 
 (defn ^:private shutdown-driver [driver]
@@ -26,7 +27,10 @@
                                                 (config/legal-process-password))
                             (scraper/process-page (config/legal-process-service-key))
                             (scraper/extract-process-count))]
-      (println "##### Process count: " process-count " #####"))
+      (println "##### Process count: " process-count " #####")
+      (when (> process-count 0)
+        (let [{:keys [sent?]} (zenvia/send-sms process-count)]
+          (println "##### SMS sent: " sent? " #####"))))
     (catch Exception e
       (println "##### Error #####" (.getMessage e)))
     (finally
