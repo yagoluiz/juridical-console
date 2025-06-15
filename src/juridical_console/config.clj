@@ -33,3 +33,15 @@
 (defn legal-process-execute-in-milliseconds []
   (-> (env-or-edn "LEGAL_PROCESS_EXECUTE_IN_MILLISECONDS" :legal-process-execute-in-milliseconds)
       (Integer/parseInt)))
+
+(defn senvia-send-sms-url []
+  (env-or-edn "SENVIA_SEND_SMS_URL" :senvia-send-sms-url))
+
+(defn senvia-api-token []
+  (env-or-edn "SENVIA_API_TOKEN" :senvia-api-token))
+
+(defn senvia-send-sms-from []
+  (env-or-edn "SENVIA_SEND_SMS_FROM" :senvia-send-sms-from))
+
+(defn senvia-send-sms-to []
+  (env-or-edn "SENVIA_SEND_SMS_TO" :senvia-send-sms-to))
