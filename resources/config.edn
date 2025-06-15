@@ -7,5 +7,5 @@
  :legal-process-execute-in-milliseconds "2000"
  :senvia-send-sms-url                   "https://api.zenvia.com/v2/channels/sms/messages"
  :senvia-api-token                      "your-api-token"
- :senvia-send-sms-from                  "your-zenvia-id"
- :senvia-send-sms-to                    "your-to-phone-number"}
+ :senvia-sms-from                       "your-zenvia-id"
+ :senvia-sms-to                         "your-to-phone-number"}

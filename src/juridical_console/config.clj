@@ -40,8 +40,8 @@
 (defn senvia-api-token []
   (env-or-edn "SENVIA_API_TOKEN" :senvia-api-token))
 
-(defn senvia-send-sms-from []
-  (env-or-edn "SENVIA_SEND_SMS_FROM" :senvia-send-sms-from))
+(defn senvia-sms-from []
+  (env-or-edn "SENVIA_SMS_FROM" :senvia-sms-from))
 
-(defn senvia-send-sms-to []
-  (env-or-edn "SENVIA_SEND_SMS_TO" :senvia-send-sms-to))
+(defn senvia-sms-to []
+  (env-or-edn "SENVIA_SMS_TO" :senvia-sms-to))
