@@ -16,8 +16,7 @@
                                             "Content-Type" "application/json"}
                                   :body    (json/generate-string payload)})]
       (println (str "##### Zenvia response ##### \n"
-                    "Status: " (:status @response) "\n"
-                    "Body: " (json/parse-string (:body @response) true)))
+                    "Response: " (json/parse-string (:body @response) true)))
       (if (= 200 (:status @response))
         {:sent? true}
         {:sent? false}))
