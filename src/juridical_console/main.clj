@@ -23,15 +23,14 @@
 
 (defn ^:private execute-process [driver]
   (try
-    (let [process-count        (-> driver
-                                   (scraper/login-page (config/legal-process-url)
-                                                       (config/legal-process-user)
-                                                       (config/legal-process-password))
-                                   (scraper/process-page (config/legal-process-service-key))
-                                   (scraper/extract-process-count))
-          cached-process-count  @cached-process-count
-          send-sms?             (and (> process-count 0) (not= process-count cached-process-count))]
-      (log/info "Process count cached =>" cached-process-count)
+    (let [process-count (-> driver
+                            (scraper/login-page (config/legal-process-url)
+                                                (config/legal-process-user)
+                                                (config/legal-process-password))
+                            (scraper/process-page (config/legal-process-service-key))
+                            (scraper/extract-process-count))
+          send-sms?     (and (> process-count 0) (not= process-count @cached-process-count))]
+      (log/info "Process count cached =>" @cached-process-count)
       (log/info "Process count =>" process-count)
       (when send-sms?
         (reset! cached-process-count process-count)
