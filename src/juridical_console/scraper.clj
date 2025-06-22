@@ -42,12 +42,12 @@
                     (when-not (clojure.string/blank? content)
                       (Integer/parseInt content)))
                   (catch Exception e
-                    (log/warn "Process count extraction failed: " (.getMessage e))
+                    (log/warn "Process count extraction failed" (.getMessage e))
                     0)))))
           table-rows)
         0))
     (catch Exception e
-      (log/error "Process not enabled: " (.getMessage e))
+      (log/error "Process not enabled" (.getMessage e))
       0)))
 
 (defn logoff-page [driver url]

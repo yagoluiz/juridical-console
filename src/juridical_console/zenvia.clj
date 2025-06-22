@@ -16,11 +16,10 @@
                                   :headers {"x-api-token"  (config/senvia-api-token)
                                             "Content-Type" "application/json"}
                                   :body    (json/generate-string payload)})]
-      (log/infof "##### Zenvia response ##### \nResponse: %s"
-                 (json/parse-string (:body @response) true))
+      (log/info "Zenvia response" (json/parse-string (:body @response) true))
       (if (= 200 (:status @response))
         {:sent? true}
         {:sent? false}))
     (catch Exception e
-      (log/errorf "##### Zenvia error ##### \n%s" (.getMessage e))
+      (log/error (.getMessage e))
       {:sent? false})))

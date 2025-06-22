@@ -12,13 +12,13 @@
     (scraper/logoff-page driver (config/legal-process-url))
     (scraper/quit-driver driver)
     (catch Exception e
-      (log/error "##### Error during driver shutdown #####" (.getMessage e)))))
+      (log/error "Error during driver shutdown" (.getMessage e)))))
 
 (defn ^:private register-shutdown-hook [driver]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread.
                       #(do
-                         (log/info "##### Shutting down Juridical Console... #####")
+                         (log/info "Shutting down Juridical Console...")
                          (shutdown-driver driver)))))
 
 (defn ^:private execute-process [driver]
@@ -31,26 +31,25 @@
                                    (scraper/extract-process-count))
           cached-process-count  @cached-process-count
           send-sms?             (and (> process-count 0) (not= process-count cached-process-count))]
-      (log/info "##### Process count cached: " cached-process-count " #####")
-      (log/info "##### Process count: " process-count " #####")
+      (log/info "Process count cached =>" cached-process-count)
+      (log/info "Process count =>" process-count)
       (when send-sms?
         (reset! cached-process-count process-count)
         (let [{:keys [sent?]} (zenvia/send-sms process-count)]
-          (log/info "##### SMS sent: " sent? " #####"))))
+          (log/info "SMS sent =>" sent?))))
     (catch Exception e
-      (log/error "##### Error #####" (.getMessage e)))
+      (log/error (.getMessage e)))
     (finally
       (shutdown-driver driver))))
 
 (defn -main [& _]
-  (log/info "##### Juridical Console #####")
   (loop [hook-registered? false]
     (let [driver (scraper/start-driver (config/selenium-host)
                                        (config/selenium-port))]
       (when (not hook-registered?)
         (register-shutdown-hook driver))
-      (log/info "##### Starting process run #####")
+      (log/info "Starting process run...")
       (execute-process driver)
-      (log/info "##### Waiting for next run... #####")
+      (log/info "Waiting for next run...")
       (Thread/sleep (long (config/legal-process-execute-in-milliseconds)))
       (recur true))))
