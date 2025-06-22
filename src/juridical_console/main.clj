@@ -4,6 +4,8 @@
             [juridical-console.zenvia :as zenvia])
   (:gen-class))
 
+(def ^:private cached-process-count (atom 0))
+
 (defn ^:private shutdown-driver [driver]
   (try
     (scraper/logoff-page driver (config/legal-process-url))
@@ -21,14 +23,17 @@
 (defn execute-process [driver]
   (println "##### Starting process run #####")
   (try
-    (let [process-count (-> driver
-                            (scraper/login-page (config/legal-process-url)
-                                                (config/legal-process-user)
-                                                (config/legal-process-password))
-                            (scraper/process-page (config/legal-process-service-key))
-                            (scraper/extract-process-count))]
+    (let [process-count        (-> driver
+                                   (scraper/login-page (config/legal-process-url)
+                                                       (config/legal-process-user)
+                                                       (config/legal-process-password))
+                                   (scraper/process-page (config/legal-process-service-key))
+                                   (scraper/extract-process-count))
+          cached-process-count  @cached-process-count]
+      (println "##### Process count cached: " cached-process-count " #####")
       (println "##### Process count: " process-count " #####")
-      (when (> process-count 0)
+      (when (not= process-count cached-process-count)
+        (reset! cached-process-count process-count)
         (let [{:keys [sent?]} (zenvia/send-sms process-count)]
           (println "##### SMS sent: " sent? " #####"))))
     (catch Exception e
