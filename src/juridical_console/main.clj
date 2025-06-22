@@ -23,19 +23,20 @@
 
 (defn ^:private execute-process [driver]
   (try
-    (let [process-count (-> driver
-                            (scraper/login-page (config/legal-process-url)
-                                                (config/legal-process-user)
-                                                (config/legal-process-password))
-                            (scraper/process-page (config/legal-process-service-key))
-                            (scraper/extract-process-count))
-          send-sms?     (and (> process-count 0) (not= process-count @cached-process-count))]
+    (let [process-count          (-> driver
+                                     (scraper/login-page (config/legal-process-url)
+                                                         (config/legal-process-user)
+                                                         (config/legal-process-password))
+                                     (scraper/process-page (config/legal-process-service-key))
+                                     (scraper/extract-process-count))
+          process-count-changed? (and (> process-count 0) (not= process-count @cached-process-count))]
       (log/info "Process count cached =>" @cached-process-count)
       (log/info "Process count =>" process-count)
-      (when send-sms?
-        (reset! cached-process-count process-count)
+      (when process-count-changed?
         (let [{:keys [sent?]} (zenvia/send-sms process-count)]
-          (log/info "SMS sent =>" sent?))))
+          (log/info "SMS sent =>" sent?)
+          (when sent?
+            (reset! cached-process-count process-count)))))
     (catch Exception e
       (log/error (.getMessage e)))
     (finally
