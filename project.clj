@@ -6,7 +6,8 @@
                  [etaoin "1.1.43"]
                  [http-kit "2.8.0"]
                  [cheshire "6.0.0"]
-                 [nubank/matcher-combinators "3.9.1"]]
+                 [nubank/matcher-combinators "3.9.1"]
+                 [ch.qos.logback/logback-classic "1.5.18"]]
   :source-paths ["src"]
   :main ^:skip-aot juridical-console.main
   :target-path "target/%s"

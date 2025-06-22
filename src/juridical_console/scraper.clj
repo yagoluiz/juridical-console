@@ -1,5 +1,6 @@
 (ns juridical-console.scraper
-  (:require [etaoin.api :as e]))
+  (:require [clojure.tools.logging :as log]
+            [etaoin.api :as e]))
 
 (defn start-driver [url port]
   (e/chrome {:host url
@@ -41,12 +42,12 @@
                     (when-not (clojure.string/blank? content)
                       (Integer/parseInt content)))
                   (catch Exception e
-                    (println "Process count extraction failed: " (.getMessage e))
+                    (log/warn "Process count extraction failed: " (.getMessage e))
                     0)))))
           table-rows)
         0))
     (catch Exception e
-      (println "Process not enabled: " (.getMessage e))
+      (log/error "Process not enabled: " (.getMessage e))
       0)))
 
 (defn logoff-page [driver url]

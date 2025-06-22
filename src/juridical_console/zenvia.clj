@@ -1,5 +1,6 @@
 (ns juridical-console.zenvia
   (:require [cheshire.core :as json]
+            [clojure.tools.logging :as log]
             [juridical-console.config :as config]
             [org.httpkit.client :as http]))
 
@@ -15,11 +16,11 @@
                                   :headers {"x-api-token"  (config/senvia-api-token)
                                             "Content-Type" "application/json"}
                                   :body    (json/generate-string payload)})]
-      (println (str "##### Zenvia response ##### \n"
-                    "Response: " (json/parse-string (:body @response) true)))
+      (log/infof "##### Zenvia response ##### \nResponse: %s"
+                 (json/parse-string (:body @response) true))
       (if (= 200 (:status @response))
         {:sent? true}
         {:sent? false}))
     (catch Exception e
-      (println (str "##### Zenvia error ##### \n" (.getMessage e)))
+      (log/errorf "##### Zenvia error ##### \n%s" (.getMessage e))
       {:sent? false})))

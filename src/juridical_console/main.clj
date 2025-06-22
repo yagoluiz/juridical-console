@@ -1,5 +1,6 @@
 (ns juridical-console.main
-  (:require [juridical-console.scraper :as scraper]
+  (:require [clojure.tools.logging :as log]
+            [juridical-console.scraper :as scraper]
             [juridical-console.config :as config]
             [juridical-console.zenvia :as zenvia])
   (:gen-class))
@@ -11,17 +12,16 @@
     (scraper/logoff-page driver (config/legal-process-url))
     (scraper/quit-driver driver)
     (catch Exception e
-      (println "##### Error during driver shutdown #####" (.getMessage e)))))
+      (log/error "##### Error during driver shutdown #####" (.getMessage e)))))
 
 (defn ^:private register-shutdown-hook [driver]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread.
                       #(do
-                         (println "##### Shutting down Juridical Console... #####")
+                         (log/info "##### Shutting down Juridical Console... #####")
                          (shutdown-driver driver)))))
 
 (defn ^:private execute-process [driver]
-  (println "##### Starting process run #####")
   (try
     (let [process-count        (-> driver
                                    (scraper/login-page (config/legal-process-url)
@@ -31,25 +31,26 @@
                                    (scraper/extract-process-count))
           cached-process-count  @cached-process-count
           send-sms?             (and (> process-count 0) (not= process-count cached-process-count))]
-      (println "##### Process count cached: " cached-process-count " #####")
-      (println "##### Process count: " process-count " #####")
+      (log/info "##### Process count cached: " cached-process-count " #####")
+      (log/info "##### Process count: " process-count " #####")
       (when send-sms?
         (reset! cached-process-count process-count)
         (let [{:keys [sent?]} (zenvia/send-sms process-count)]
-          (println "##### SMS sent: " sent? " #####"))))
+          (log/info "##### SMS sent: " sent? " #####"))))
     (catch Exception e
-      (println "##### Error #####" (.getMessage e)))
+      (log/error "##### Error #####" (.getMessage e)))
     (finally
       (shutdown-driver driver))))
 
 (defn -main [& _]
-  (println "##### Juridical Console #####")
+  (log/info "##### Juridical Console #####")
   (loop [hook-registered? false]
     (let [driver (scraper/start-driver (config/selenium-host)
                                        (config/selenium-port))]
       (when (not hook-registered?)
         (register-shutdown-hook driver))
+      (log/info "##### Starting process run #####")
       (execute-process driver)
-      (println "##### Waiting for next run... #####")
+      (log/info "##### Waiting for next run... #####")
       (Thread/sleep (long (config/legal-process-execute-in-milliseconds)))
       (recur true))))
