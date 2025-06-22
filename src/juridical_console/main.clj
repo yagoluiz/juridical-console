@@ -20,7 +20,7 @@
                          (println "##### Shutting down Juridical Console... #####")
                          (shutdown-driver driver)))))
 
-(defn execute-process [driver]
+(defn ^:private execute-process [driver]
   (println "##### Starting process run #####")
   (try
     (let [process-count        (-> driver
