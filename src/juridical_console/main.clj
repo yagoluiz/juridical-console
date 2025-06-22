@@ -18,7 +18,7 @@
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread.
                       #(do
-                         (log/info "Shutting down Juridical Console...")
+                         (log/info "Shutting down...")
                          (shutdown-driver driver)))))
 
 (defn ^:private execute-process [driver]
