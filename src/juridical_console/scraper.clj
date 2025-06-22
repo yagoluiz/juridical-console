@@ -42,7 +42,7 @@
                     (when-not (clojure.string/blank? content)
                       (Integer/parseInt content)))
                   (catch Exception e
-                    (log/warn "Process count extraction failed" (.getMessage e))
+                    (log/error "Process count extraction failed" (.getMessage e))
                     0)))))
           table-rows)
         0))
