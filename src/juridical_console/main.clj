@@ -29,10 +29,11 @@
                                                        (config/legal-process-password))
                                    (scraper/process-page (config/legal-process-service-key))
                                    (scraper/extract-process-count))
-          cached-process-count  @cached-process-count]
+          cached-process-count  @cached-process-count
+          send-sms?             (and (> process-count 0) (not= process-count cached-process-count))]
       (println "##### Process count cached: " cached-process-count " #####")
       (println "##### Process count: " process-count " #####")
-      (when (not= process-count cached-process-count)
+      (when send-sms?
         (reset! cached-process-count process-count)
         (let [{:keys [sent?]} (zenvia/send-sms process-count)]
           (println "##### SMS sent: " sent? " #####"))))
