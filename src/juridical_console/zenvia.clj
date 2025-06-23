@@ -21,5 +21,5 @@
         {:sent? true}
         {:sent? false}))
     (catch Exception e
-      (log/error (.getMessage e))
+      (log/error "Zenvia error" (.getMessage e))
       {:sent? false})))

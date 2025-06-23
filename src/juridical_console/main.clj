@@ -38,7 +38,7 @@
           (when sent?
             (reset! cached-process-count process-count)))))
     (catch Exception e
-      (log/error (.getMessage e)))
+      (log/error "Execute process error" (.getMessage e)))
     (finally
       (shutdown-driver driver))))
 
