@@ -1,3 +1,5 @@
+[![Build Juridical Console](https://github.com/yagoluiz/juridical-console/actions/workflows/build.yml/badge.svg)](https://github.com/yagoluiz/juridical-console/actions/workflows/build.yml)
+
 # Juridical Console
 
 Worker console responsible for web scraping and identifying legal processes from the Projudi system for the Justice
