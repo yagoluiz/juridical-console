@@ -16,7 +16,7 @@
 
 (defn selenium-port []
   (-> (env-or-edn "SELENIUM_PORT" :selenium-port)
-      (Integer/parseInt)))
+      Integer/parseInt))
 
 (defn legal-process-url []
   (env-or-edn "LEGAL_PROCESS_URL" :legal-process-url))
@@ -32,7 +32,7 @@
 
 (defn legal-process-execute-in-milliseconds []
   (-> (env-or-edn "LEGAL_PROCESS_EXECUTE_IN_MILLISECONDS" :legal-process-execute-in-milliseconds)
-      (Integer/parseInt)))
+      Integer/parseInt))
 
 (defn senvia-send-sms-url []
   (env-or-edn "SENVIA_SEND_SMS_URL" :senvia-send-sms-url))
