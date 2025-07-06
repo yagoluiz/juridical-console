@@ -1,17 +1,22 @@
 FROM openjdk:21-jdk-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates bash rlwrap unzip && \
+ENV LEIN_VERSION=2.9.10
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates bash rlwrap unzip && \
+    curl -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/${LEIN_VERSION}/bin/lein && \
+    chmod +x /usr/local/bin/lein && \
+    lein && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV LEIN_VERSION 2.9.10
-RUN curl -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/$LEIN_VERSION/bin/lein && \
-    chmod +x /usr/local/bin/lein && \
-    lein
-
 WORKDIR /app
-COPY . /app
 
+COPY project.clj /app/
 RUN lein deps
 
-CMD ["lein", "run"]
+COPY . /app
+
+RUN lein compile
+
+ENTRYPOINT ["lein", "run"]
