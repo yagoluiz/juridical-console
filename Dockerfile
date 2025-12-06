@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21
 
 ENV LEIN_VERSION=2.9.10
 
