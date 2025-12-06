@@ -22,6 +22,7 @@
   (some->> (e/query-all driver {:xpath (str "//*[contains(text(),'" service-key "')]")})
            last
            (e/click-el driver))
+  (Thread/sleep 2000)
   (e/switch-frame driver {:name "userMainFrame"})
   driver)
 
