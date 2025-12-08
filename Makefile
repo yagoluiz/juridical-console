@@ -14,7 +14,7 @@ lein-repl:
 	lein with-profile dev repl
 
 run-compose:
-	docker-compose build && docker-compose up -d
+	docker-compose up --build
 
 down-compose:
 	docker-compose down
